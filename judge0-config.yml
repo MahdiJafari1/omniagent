@@ -1,0 +1,49 @@
+# judge0-config.yml
+
+# Enable or disable authentication
+authentication: false
+
+# Workers configuration
+workers: 2
+
+# Maximum queue size
+max_queue_size: 100
+
+# Set a default runtime limit (in seconds)
+cpu_time_limit: 5
+max_cpu_time_limit: 15
+
+# Set memory limits (in KB)
+memory_limit: 128000
+max_memory_limit: 512000
+
+# Set maximum number of processes and/or threads
+max_processes_and_or_threads: 60
+
+# Set stack limit (in KB)
+stack_limit: 64000
+
+# Set maximum file size created or modified by the program (in KB)
+max_file_size: 30000
+
+# Enable or disable additional security measures
+enable_per_process_and_thread_time_limit: false
+enable_per_process_and_thread_memory_limit: true
+
+# Configuration for allowed languages
+languages:
+  - id: 34
+    name: "Python (3.12)"
+    run_cmd: "/usr/bin/python3 /tmp/source_code.py"
+
+
+# Redis configuration
+redis_host: "redis"
+redis_port: 6379
+
+# Database configuration (using PostgreSQL)
+postgres_host: db
+postgres_port: 5432
+postgres_user: ${POSTGRES_USER}
+postgres_password: ${POSTGRES_PASSWORD}
+postgres_db: ${POSTGRES_DB}

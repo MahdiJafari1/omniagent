@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    command: pipenv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --workers 4
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  judge0:
+    image: judge0/judge0:latest
+    volumes:
+      - ./judge0-config.yml:/judge0.yml:ro
+    ports:
+      - "2358:2358"
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
