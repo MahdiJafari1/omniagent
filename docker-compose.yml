@@ -9,15 +9,15 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
+      - postgres
     env_file:
       - .env
 
-  db:
+  postgres:
     image: postgres
     restart: always
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -28,15 +28,15 @@ services:
     ports:
       - "6379:6379"
 
-  judge0:
-    image: judge0/judge0:latest
-    volumes:
-      - ./judge0-config.yml:/judge0.yml:ro
-    ports:
-      - "2358:2358"
-    depends_on:
-      - db
-      - redis
+#  judge0:
+#    image: judge0/judge0:latest
+#    volumes:
+#      - ./judge0-config.yml:/judge0.yml:ro
+#    ports:
+#      - "2358:2358"
+#    depends_on:
+#      - postgres
+#      - redis
 
 volumes:
   postgres_data:
