@@ -8,12 +8,11 @@ from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
 from langchain_core.runnables import RunnableWithFallbacks
-from openai import APIConnectionError, APIError, APITimeoutError, \
-    RateLimitError
+from openai import APIConnectionError, APIError, APITimeoutError, RateLimitError
 
-from app.core.logging import logger
+from app.core.logging import app_logger
 
-logger = logger.get_logger(__name__)
+logger = app_logger.get_logger(__name__)
 
 
 class Executor:
@@ -39,24 +38,26 @@ class Executor:
 
     @staticmethod
     def get_parser(output_object: Type[BaseModel] | None):
-        return JsonOutputParser(
-            pydantic_object=output_object) if output_object else StrOutputParser()
+        return (
+            JsonOutputParser(pydantic_object=output_object)
+            if output_object
+            else StrOutputParser()
+        )
 
     @backoff.on_exception(
         backoff.expo,
-        exception=(
-        RateLimitError, APIError, APIConnectionError, APITimeoutError),
+        exception=(RateLimitError, APIError, APIConnectionError, APITimeoutError),
         max_tries=5,
         on_backoff=lambda details: logger.warning(
             f"Executor.execute: Retry attempt {details['tries']} after {details['wait']} seconds due to {details['exception']}"
         ),
     )
     def execute(
-            self,
-            prompt: Union[PromptTemplate, List[PromptTemplate]],
-            args: dict,
-            output_object: Type[BaseModel] | None = None,
-            description: Optional[str] = "Executing prompt",
+        self,
+        prompt: Union[PromptTemplate, List[PromptTemplate]],
+        args: dict,
+        output_object: Type[BaseModel] | None = None,
+        description: Optional[str] = "Executing prompt",
     ):
         try:
             parser = self.get_parser(output_object)
@@ -73,19 +74,18 @@ class Executor:
 
     @backoff.on_exception(
         backoff.expo,
-        exception=(
-        RateLimitError, APIError, APIConnectionError, APITimeoutError),
+        exception=(RateLimitError, APIError, APIConnectionError, APITimeoutError),
         max_tries=5,
         on_backoff=lambda details: logger.warning(
             f"Executor.batch_execute: Retry attempt {details['tries']} after {details['wait']} seconds due to {details['exception']}"
         ),
     )
     def batch_execute(
-            self,
-            prompts: List[PromptTemplate],
-            args: dict,
-            output_object: Type[BaseModel] | None = None,
-            description: Optional[str] = "Executing batch prompts",
+        self,
+        prompts: List[PromptTemplate],
+        args: dict,
+        output_object: Type[BaseModel] | None = None,
+        description: Optional[str] = "Executing batch prompts",
     ) -> dict:
         try:
             parser = self.get_parser(output_object)

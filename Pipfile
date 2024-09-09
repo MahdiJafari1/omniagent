@@ -12,6 +12,7 @@ langchain = "*"
 langchain-openai = "*"
 backoff = "*"
 openai = "*"
+loguru = "*"
 
 [dev-packages]
 

@@ -76,4 +76,4 @@ class AppLogger:
         return logger.bind(module=name) if name else logger
 
 
-logger = AppLogger()
+app_logger = AppLogger()

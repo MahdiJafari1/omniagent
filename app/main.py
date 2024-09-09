@@ -8,9 +8,9 @@ app = FastAPI(
     openapi_tags=settings.TAGS_METADATA,
     description=settings.DESCRIPTION,
     version=settings.VERSION,
-    terms_of_service=settings.TOS,
+    # terms_of_service=settings.TOS,
     contact=settings.CONTACT,
-    license_info=settings.LICENSE,
+    # license_info=settings.LICENSE,
 )
 
 

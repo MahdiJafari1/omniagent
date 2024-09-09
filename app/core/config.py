@@ -14,13 +14,13 @@ class Settings(BaseSettings):
         # {"name": "tasks", "description": "Operations related to tasks"},
         # {"name": "agents", "description": "Operations related to agents"},
     ]
-    TOS: str = "https://www.example.com/tos"
+    # TOS: str = "https://www.example.com/tos"
     CONTACT: dict = {
         "name": "Mahdi Jafari",
         "url": "https://www.linkedin.com/in/mahdijafari12/",
         "email": "jafarimahdi.me@gmail.com",
     }
-    LICENSE: dict = {"name": "MIT", "url": "https://www.example.com/license"}
+    # LICENSE: dict = {"name": "MIT", "url": "https://www.example.com/license"}
     ROOT_DIR: Path = Path(__file__).resolve().parent.parent
 
 
